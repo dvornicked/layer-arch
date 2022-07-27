@@ -9,31 +9,31 @@ import 'reflect-metadata'
 
 @injectable()
 export class App {
-  app: Express
-  server: Server
-  port: number
+	app: Express
+	server: Server
+	port: number
 
-  constructor(
-    @inject(TYPES.Logger) private logger: LoggerService,
-    @inject(TYPES.UserController) private userController: UserController,
-    @inject(TYPES.ExceptionFilter) private exceptionFilter: ExceptionFilter
-  ) {
-    this.app = express()
-    this.port = 8000
-  }
+	constructor(
+		@inject(TYPES.Logger) private logger: LoggerService,
+		@inject(TYPES.UserController) private userController: UserController,
+		@inject(TYPES.ExceptionFilter) private exceptionFilter: ExceptionFilter,
+	) {
+		this.app = express()
+		this.port = 8000
+	}
 
-  useRoutes() {
-    this.app.use('/users', this.userController.router)
-  }
+	useRoutes() {
+		this.app.use('/users', this.userController.router)
+	}
 
-  useExceptionFilter() {
-    this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter))
-  }
+	useExceptionFilter() {
+		this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter))
+	}
 
-  public async init() {
-    this.useRoutes()
-    this.useExceptionFilter()
-    this.server = this.app.listen(this.port)
-    console.log(`Server started: http://localhost:${this.port}`)
-  }
+	public async init() {
+		this.useRoutes()
+		this.useExceptionFilter()
+		this.server = this.app.listen(this.port)
+		console.log(`Server started: http://localhost:${this.port}`)
+	}
 }
