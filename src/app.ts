@@ -5,6 +5,7 @@ import { ExceptionFilter } from './errors/exception.filter'
 import { LoggerService } from './logger/logger.service'
 import { TYPES } from './types'
 import { UserController } from './users/user.contoller'
+import { json } from 'body-parser'
 import 'reflect-metadata'
 
 @injectable()
@@ -30,7 +31,12 @@ export class App {
 		this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter))
 	}
 
+	useMiddleware() {
+		this.app.use(json())
+	}
+
 	public async init() {
+		this.useMiddleware()
 		this.useRoutes()
 		this.useExceptionFilter()
 		this.server = this.app.listen(this.port)
